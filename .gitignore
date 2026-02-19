@@ -1,0 +1,4 @@
+node_modules/
+.next/
+.env.local
+public/icons/*.png   # Los íconos se generan con el script local

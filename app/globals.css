@@ -1,0 +1,211 @@
+/* globals.css - Estilos globales de BestieEQ
+   Depende de: nada externo
+   Es usado por: layout.tsx (importado una vez, aplica a toda la app)
+   Paleta: índigo/violeta profundo con acento verde (química)
+*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Variables de color ─────────────────────────────────────────────────── */
+:root {
+  --color-primario: #4f46e5;
+  --color-primario-suave: #6366f1;
+  --color-secundario: #7c3aed;
+  --color-acento: #10b981;
+  --fondo-gradiente: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a5f 100%);
+  --texto-principal: #f8fafc;
+  --texto-secundario: #cbd5e1;
+  --texto-timestamp: #94a3b8;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;   /* Evita doble scroll en móvil */
+  background: var(--fondo-gradiente);
+  color: var(--texto-principal);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ─── Estructura del chat ────────────────────────────────────────────────── */
+.chat-container {
+  /* dvh (dynamic viewport height): se ajusta cuando aparece el teclado en móvil */
+  height: 100dvh;
+  height: 100vh;  /* Fallback para navegadores sin soporte dvh */
+  display: flex;
+  flex-direction: column;
+  background: var(--fondo-gradiente);
+}
+
+.chat-mensajes {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+.header {
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 0.875rem 1rem;
+  padding-top: calc(0.875rem + env(safe-area-inset-top));  /* Muesca iPhone */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* ─── Avatar del bot ─────────────────────────────────────────────────────── */
+.avatar-bot {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-acento), var(--color-primario));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* ─── Burbujas de mensajes ───────────────────────────────────────────────── */
+.burbuja-usuario {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  border-radius: 18px 18px 4px 18px;
+  padding: 0.75rem 1rem;
+  max-width: 80%;
+  margin-left: auto;
+  word-break: break-word;
+}
+
+.burbuja-bot {
+  background: rgba(255,255,255,0.08);
+  color: var(--texto-principal);
+  border-radius: 18px 18px 18px 4px;
+  padding: 0.75rem 1rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  word-break: break-word;
+}
+
+/* ─── Markdown dentro del bot ────────────────────────────────────────────── */
+.burbuja-bot p { margin-bottom: 0.5rem; }
+.burbuja-bot p:last-child { margin-bottom: 0; }
+.burbuja-bot strong { color: #a5f3fc; font-weight: 600; }
+.burbuja-bot ul, .burbuja-bot ol { padding-left: 1.25rem; margin: 0.5rem 0; }
+.burbuja-bot li { margin-bottom: 0.25rem; }
+.burbuja-bot h1, .burbuja-bot h2, .burbuja-bot h3 { color: #c7d2fe; margin: 0.75rem 0 0.25rem; font-weight: 600; }
+/* Fórmulas químicas en verde esmeralda */
+.burbuja-bot code {
+  background: rgba(16,185,129,0.2);
+  color: #6ee7b7;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875em;
+}
+.burbuja-bot pre { background: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 8px; overflow-x: auto; margin: 0.5rem 0; }
+.burbuja-bot pre code { background: transparent; padding: 0; }
+
+/* ─── Fuentes de documentos ──────────────────────────────────────────────── */
+.fuentes-container {
+  margin-top: 0.5rem;
+  padding: 0.375rem 0.625rem;
+  background: rgba(16,185,129,0.1);
+  border-left: 2px solid var(--color-acento);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.75rem;
+  color: #6ee7b7;
+}
+
+/* ─── Área de input ──────────────────────────────────────────────────────── */
+.input-area {
+  padding: 0.75rem 1rem;
+  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));  /* iPhone home bar */
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+.input-textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  color: white;
+  padding: 0.75rem 1rem;
+  font-size: 16px;  /* 16px evita el zoom automático en iOS */
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  min-height: 44px;
+  max-height: 120px;
+  font-family: inherit;
+}
+.input-textarea::placeholder { color: rgba(255,255,255,0.4); }
+.input-textarea:focus { border-color: var(--color-primario-suave); }
+
+/* ─── Botones ────────────────────────────────────────────────────────────── */
+.btn-enviar {
+  min-width: 44px; min-height: 44px;  /* Touch-friendly: mínimo 44px */
+  background: var(--color-primario);
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.1s;
+  color: white;
+  flex-shrink: 0;
+}
+.btn-enviar:hover:not(:disabled) { background: var(--color-primario-suave); transform: scale(1.05); }
+.btn-enviar:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-accion {
+  min-height: 36px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
+  color: var(--texto-secundario);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 0.375rem;
+  white-space: nowrap;
+}
+.btn-accion:hover { background: rgba(255,255,255,0.1); color: white; }
+
+/* ─── Indicador de escritura ─────────────────────────────────────────────── */
+@keyframes typing-bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-6px); }
+}
+.typing-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--color-acento);
+  animation: typing-bounce 1.4s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* ─── Animación de entrada de mensajes ───────────────────────────────────── */
+@keyframes mensaje-entrada {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.mensaje-animado { animation: mensaje-entrada 0.3s ease-out; }
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+
+/* ─── Accesibilidad ──────────────────────────────────────────────────────── */
+:focus-visible { outline: 2px solid var(--color-primario-suave); outline-offset: 2px; }
